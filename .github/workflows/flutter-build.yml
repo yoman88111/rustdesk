@@ -1339,92 +1339,92 @@ jobs:
 #          tag_name: ${{ env.TAG_NAME }}
 #          files: ./rustdesk-update.json
 #
-  publish_unsigned:
-    needs:
-      - build-for-macOS
-      - build-for-windows-flutter
-      - build-for-windows-sciter
-    runs-on: ubuntu-latest
-    if: ${{ inputs.upload-artifact }}
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-macos-x86_64
-          path: ./
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-macos-aarch64
-          path: ./
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-windows-x86_64
-          path: ./windows-x86_64/
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-windows-aarch64
-          path: ./windows-aarch64/
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-windows-x86
-          path: ./windows-x86/
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-msi-template-x86_64
-          path: ./msi-template/
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-msi-template-aarch64
-          path: ./msi-template/
-
-      - name: Download Artifacts
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-packer-template-x86_64
-          path: ./packer-template/
-
-      - name: Download Artifacts
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-packer-template-aarch64
-          path: ./packer-template/
-
-      - name: Download Artifacts
-        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: rustdesk-unsigned-packer-template-x86
-          path: ./packer-template/
-
-      - name: Combine unsigned app
-        run: |
-          packer_template=()
-          if [[ "$SIGN_BASE_URL" != '-2' ]]; then
-            packer_template=(packer-template)
-          fi
-          tar czf rustdesk-${{ env.VERSION }}-unsigned.tar.gz *.dmg windows-x86_64 windows-aarch64 windows-x86 msi-template "${packer_template[@]}"
-
-      - name: Publish unsigned app
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
-        with:
-          prerelease: true
-          tag_name: ${{ env.TAG_NAME }}
-          files: rustdesk-${{ env.VERSION }}-unsigned.tar.gz
-
+#  publish_unsigned:
+#    needs:
+#      - build-for-macOS
+#      - build-for-windows-flutter
+#      - build-for-windows-sciter
+#    runs-on: ubuntu-latest
+#    if: ${{ inputs.upload-artifact }}
+#    steps:
+#      - name: Download artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-macos-x86_64
+#          path: ./
+#
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-macos-aarch64
+#          path: ./
+#
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-windows-x86_64
+#          path: ./windows-x86_64/
+#
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-windows-aarch64
+#          path: ./windows-aarch64/
+#
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-windows-x86
+#          path: ./windows-x86/
+#
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-msi-template-x86_64
+#          path: ./msi-template/
+#
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-msi-template-aarch64
+#          path: ./msi-template/
+#
+#      - name: Download Artifacts
+#        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-packer-template-x86_64
+#          path: ./packer-template/
+#
+#      - name: Download Artifacts
+#        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-packer-template-aarch64
+#          path: ./packer-template/
+#
+#      - name: Download Artifacts
+#        if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
+#        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+#        with:
+#          name: rustdesk-unsigned-packer-template-x86
+#          path: ./packer-template/
+#
+#      - name: Combine unsigned app
+#        run: |
+#          packer_template=()
+#          if [[ "$SIGN_BASE_URL" != '-2' ]]; then
+#            packer_template=(packer-template)
+#          fi
+#          tar czf rustdesk-${{ env.VERSION }}-unsigned.tar.gz *.dmg windows-x86_64 windows-aarch64 windows-x86 msi-template "${packer_template[@]}"
+#
+#      - name: Publish unsigned app
+#        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+#        with:
+#          prerelease: true
+#          tag_name: ${{ env.TAG_NAME }}
+#          files: rustdesk-${{ env.VERSION }}-unsigned.tar.gz
+#
 #  build-rustdesk-android:
 #    needs: [generate-bridge]
 #    name: build rustdesk android apk ${{ matrix.job.target }}
